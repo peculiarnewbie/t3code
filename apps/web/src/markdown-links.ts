@@ -120,6 +120,18 @@ export function normalizeMarkdownFileLinkHrefKey(href: string): string {
   return target ? `${target.path}${target.hash}` : rewrittenHref;
 }
 
+export function resolveRenderedMarkdownFileLinkMeta(
+  href: string | undefined,
+  cwd: string | undefined,
+  precomputedMetaByHref: ReadonlyMap<string, MarkdownFileLinkMeta>,
+): MarkdownFileLinkMeta | null {
+  if (!href) return null;
+  const normalizedHref = normalizeMarkdownFileLinkHrefKey(href);
+  return (
+    precomputedMetaByHref.get(normalizedHref) ?? resolveMarkdownFileLinkMeta(normalizedHref, cwd)
+  );
+}
+
 interface MarkdownLinkNode {
   type?: string;
   url?: unknown;

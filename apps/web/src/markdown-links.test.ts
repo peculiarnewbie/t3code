@@ -6,8 +6,24 @@ import {
   resolveInlineCodeFileLinkMeta,
   resolveMarkdownFileLinkMeta,
   resolveMarkdownFileLinkTarget,
+  resolveRenderedMarkdownFileLinkMeta,
   rewriteMarkdownFileUriHref,
 } from "./markdown-links";
+
+describe("resolveRenderedMarkdownFileLinkMeta", () => {
+  it("resolves the parsed href when raw markdown extraction missed it", () => {
+    expect(
+      resolveRenderedMarkdownFileLinkMeta(
+        "C:/Users/Carlos/My%20Project/docs/Plan%20(final).md",
+        "C:/Users/Carlos/My Project",
+        new Map(),
+      ),
+    ).toMatchObject({
+      targetPath: "C:/Users/Carlos/My Project/docs/Plan (final).md",
+      workspaceRelativePath: "docs/Plan (final).md",
+    });
+  });
+});
 
 describe("normalizeMarkdownLinkDestination", () => {
   it("canonicalizes backslashes in windows drive paths", () => {
