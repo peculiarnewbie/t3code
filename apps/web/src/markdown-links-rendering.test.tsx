@@ -26,6 +26,12 @@ function renderMarkdown(markdown: string): string {
 }
 
 describe("Windows markdown file link rendering", () => {
+  it("preserves an angle-bracketed drive path with spaces and parentheses", () => {
+    expect(renderMarkdown("[Open](<C:/Users/Carlos/My Project/docs/Plan (final).md>)")).toContain(
+      '<a href="C:/Users/Carlos/My%20Project/docs/Plan%20(final).md">Open</a>',
+    );
+  });
+
   it("preserves a drive-path href through HTML sanitization", () => {
     const path = "C:/Users/mike/dev-stuff/t3code/apps/web/src/markdown-links.ts";
 
